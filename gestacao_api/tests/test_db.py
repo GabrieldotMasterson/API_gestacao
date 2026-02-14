@@ -2,7 +2,6 @@ from dataclasses import asdict
 
 import pytest
 from sqlalchemy import select
-
 from src.models import Todo, User
 
 

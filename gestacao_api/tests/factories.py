@@ -1,6 +1,5 @@
 import factory
 import factory.fuzzy
-
 from src.models import Todo, TodoState, User
 
 

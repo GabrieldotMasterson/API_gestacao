@@ -1,6 +1,6 @@
-from pydantic import BaseModel, ConfigDict
-
+from pydantic import BaseModel
 from src.models.dailyMessageModel import MessageType
+
 
 class DailyMessageSchema(BaseModel):
     message: str

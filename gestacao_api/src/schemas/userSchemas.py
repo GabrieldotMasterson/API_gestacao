@@ -1,5 +1,6 @@
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
+
 class Message(BaseModel):
     message: str
 

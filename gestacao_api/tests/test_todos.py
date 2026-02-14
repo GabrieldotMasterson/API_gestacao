@@ -2,7 +2,6 @@ from http import HTTPStatus
 
 import factory.fuzzy
 import pytest
-
 from src.models import Todo, TodoState
 
 

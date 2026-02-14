@@ -1,9 +1,8 @@
-from datetime import datetime, date
-from enum import Enum
-from typing import Optional, List
+from datetime import date, datetime
+from typing import Optional
 
-from sqlmodel import SQLModel, Field, Relationship
 from sqlalchemy import Column, DateTime, func
+from sqlmodel import Field, SQLModel
 
 
 class User(SQLModel, table=True):
@@ -20,4 +19,3 @@ class User(SQLModel, table=True):
     created_at: datetime = Field(
         sa_column=Column(DateTime(timezone=True), server_default=func.now())
     )
-

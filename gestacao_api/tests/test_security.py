@@ -1,7 +1,6 @@
 from http import HTTPStatus
 
 from jwt import decode
-
 from src.security import create_access_token, settings
 
 

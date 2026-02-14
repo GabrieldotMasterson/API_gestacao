@@ -1,12 +1,9 @@
-import asyncio
-import sys
 from http import HTTPStatus
 
 from fastapi import FastAPI
 
-from src.routers import auth, DailyMessages, users
+from src.routers import DailyMessages, auth, users
 from src.schemas.message import Message
-
 
 app = FastAPI()
 
