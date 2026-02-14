@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, date
 from enum import Enum
 from typing import Optional, List
 
@@ -13,6 +13,9 @@ class User(SQLModel, table=True):
     username: str = Field(index=True, sa_column_kwargs={"unique": True})
     password: str
     email: str = Field(index=True, sa_column_kwargs={"unique": True})
+
+    last_menstrual_period: Optional[date]
+    pregnancy_date: Optional[date]
 
     created_at: datetime = Field(
         sa_column=Column(DateTime(timezone=True), server_default=func.now())
