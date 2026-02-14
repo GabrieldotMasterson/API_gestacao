@@ -1,24 +1,27 @@
 import asyncio
-import sys
-
 from logging.config import fileConfig
 
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from sqlalchemy import pool
-
 from alembic import context
 
-from src.models.dailyMessageModel import table_registry
-from src.models.userModel import table_registry
-from src.settings import Settings
+from sqlmodel import SQLModel
+
+# -------------------------------------- 
+from gestacao_api.src.models import userModel
+from gestacao_api.src.models import dailyMessageModel
+# --------------------------------------
+
+from gestacao_api.src.settings import Settings
+
 
 config = context.config
-config.set_main_option('sqlalchemy.url', Settings().DATABASE_URL)
+config.set_main_option("sqlalchemy.url", Settings().DATABASE_URL)
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-target_metadata = table_registry.metadata
+target_metadata = SQLModel.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

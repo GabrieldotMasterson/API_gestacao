@@ -1,5 +1,5 @@
 [project]
-name = "fast_zero"
+name = "gestacao_api"
 version = "0.1.0"
 description = ""
 readme = "README.md"
@@ -53,7 +53,7 @@ concurrency = ["thread", "greenlet"]
 lint = 'ruff check'
 pre_format = 'ruff check --fix'
 format = 'ruff format'
-run = 'fastapi dev src/app.py'
+run = 'fastapi dev gestacao_api/src/app.py'
 pre_test = 'task lint'
 test = 'pytest -s -x --cov=src -vv'
 post_test = 'coverage html'

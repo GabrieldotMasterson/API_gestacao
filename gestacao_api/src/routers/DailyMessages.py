@@ -13,17 +13,13 @@ from src.schemas.dailyMessageSchemas import (
     DailyMessageUpdate
 )
 
-router = APIRouter()
-
 Session = Annotated[AsyncSession, Depends(get_session)]
-CurrentUser = Annotated[User, Depends(CurrentUser)]
-
 router = APIRouter(prefix='/DailyMessage', tags=['DailyMessage'])
 
 
 # ! Nao ir para o servidor final
 @router.post('/', response_model=DailyMessageSchemaPublic)
-async def create_message(
+async def create_daily_message(
     dailyMessage: DailyMessageSchema,
     session: Session
 ): 
@@ -32,5 +28,34 @@ async def create_message(
         message = dailyMessage.message,
         emoji = dailyMessage.emoji,
         category = dailyMessage.category,
-        emoji = dailyMessage.emoji,
+        type = dailyMessage.type,
     )
+    session.add(db_message)
+    await session.commit() 
+    await session.refresh(db_message)
+
+    return db_message
+
+
+@router.get('/{message_id}', response_model=DailyMessageSchemaPublic) 
+async def get_daily_message(
+    session: Session,
+    message_id: int,
+):
+
+    query = select(DailyMessage).where(
+        DailyMessage.id == message_id
+    )
+
+    result = await session.exec(query)
+    dailyMessage = result.first()
+
+    if not dailyMessage:
+        raise HTTPException(
+            status_code=HTTPStatus.NOT_FOUND,
+            detail = "Daily message not found"
+        )
+    
+    return dailyMessage
+
+

@@ -18,10 +18,3 @@ class User(SQLModel, table=True):
         sa_column=Column(DateTime(timezone=True), server_default=func.now())
     )
 
-    todos: List[Todo] = Relationship(
-        back_populates="user",
-        sa_relationship_kwargs={
-            "cascade": "all, delete-orphan",
-            "lazy": "selectin",
-        },
-    )
