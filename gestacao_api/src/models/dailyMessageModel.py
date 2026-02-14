@@ -7,10 +7,11 @@ from sqlmodel import SQLModel, Field
 
 class MessageType(str, Enum):
     floral = 'floral',
-    oceano = 'oceano', 
-    transformações = 'transformações',
-    noite = 'noite',
-    natureza = 'natureza'
+    ocean = 'oceano', 
+    transformations = 'transformações',
+    night = 'noite',
+    nature = 'natureza'
+    body = 'seu corpo'
 
 
 # 'message':
@@ -20,7 +21,7 @@ class MessageType(str, Enum):
 
 
 class DailyMessage(SQLModel, table=True):
-    __tablename__ = "daily_message"
+    __tablename__ = "daily_message_widgets"
 
     id: Optional[int] = Field(default=None, primary_key=True)
     message: str
