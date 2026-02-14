@@ -1,14 +1,8 @@
 from datetime import datetime
 from enum import Enum
 
-from sqlalchemy.orm import (
-    Mapped,
-    mapped_as_dataclass,
-    mapped_column,
-    registry
-)
+from sqlmodel import SQLModel, Field
 
-table_registry = registry()
 
 class MessageType(str, Enum):
     floral = 'floral',
@@ -24,13 +18,13 @@ class MessageType(str, Enum):
 #       'emoji': '🌸',    
 
 
-@mapped_as_dataclass(table_registry)
-class DailyMessage:
-    __tablename__ = "dailyMessage"
-    id: Mapped[int] = mapped_column(init=False, primary_key=True)
-    message: Mapped[str]
-    category: Mapped[str]
-    emoji: Mapped[str]
-    type: Mapped[MessageType]
+class DailyMessage(SQLModel, table=True):
+    __tablename__ = "daily_message"
 
-    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
+    id: Optional[int] = Field(default=None, primary_key=True)
+    message: str
+    category: str
+    emoji: str
+    type: MessageType
+
+    user_id: int = Field(foreign_key="users.id")
