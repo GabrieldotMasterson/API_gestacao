@@ -18,3 +18,6 @@ class DailyMessageUpdate(BaseModel):
     emoji: str | None = None
     category: str | None = None
     type: MessageType | None = None
+
+
+# todo:

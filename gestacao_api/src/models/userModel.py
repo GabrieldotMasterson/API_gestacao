@@ -6,12 +6,12 @@ from sqlmodel import Field, SQLModel
 
 
 class User(SQLModel, table=True):
-    __tablename__ = "users"
+    __tablename__ = 'users'
 
     id: Optional[int] = Field(default=None, primary_key=True)
-    username: str = Field(index=True, sa_column_kwargs={"unique": True})
+    username: str = Field(index=True, sa_column_kwargs={'unique': True})
     password: str
-    email: str = Field(index=True, sa_column_kwargs={"unique": True})
+    email: str = Field(index=True, sa_column_kwargs={'unique': True})
 
     last_menstrual_period: Optional[date]
     pregnancy_date: Optional[date]

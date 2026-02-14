@@ -18,8 +18,7 @@ router = APIRouter(prefix='/DailyMessage', tags=['DailyMessage'])
 # ! Nao ir para o servidor final
 @router.post('/', response_model=DailyMessageSchemaPublic)
 async def create_daily_message(
-    dailyMessage: DailyMessageSchema,
-    session: Session
+    dailyMessage: DailyMessageSchema, session: Session
 ):
 
     db_message = DailyMessage(
@@ -41,17 +40,14 @@ async def get_daily_message(
     message_id: int,
 ):
 
-    query = select(DailyMessage).where(
-        DailyMessage.id == message_id
-    )
+    query = select(DailyMessage).where(DailyMessage.id == message_id)
 
     result = await session.exec(query)
     dailyMessage = result.first()
 
     if not dailyMessage:
         raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND,
-            detail="Daily message not found"
+            status_code=HTTPStatus.NOT_FOUND, detail='Daily message not found'
         )
 
     return dailyMessage
