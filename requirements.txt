@@ -174,7 +174,7 @@ shellingham==1.5.4
     # via typer
 six==1.17.0
     # via python-dateutil
-sqlalchemy==2.0.46
+sqlalchemy[asyncio]==2.0.36
     # via
     #   alembic
     #   gestacao-api
