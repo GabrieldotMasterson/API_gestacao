@@ -20,7 +20,7 @@ argon2-cffi==25.1.0
     # via pwdlib
 argon2-cffi-bindings==25.1.0
     # via argon2-cffi
-asyncpg==0.31.0
+asyncpg==0.29.0
     # via gestacao-api
 certifi==2026.1.4
     # via
