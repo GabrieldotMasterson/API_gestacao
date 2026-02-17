@@ -7,9 +7,11 @@ import pytest_asyncio
 from fastapi.testclient import TestClient
 from sqlalchemy import event
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlmodel import SQLModel
+
 from src.app import app
 from src.database import get_session
-from src.models import User, table_registry
+from src.models.userModel import User
 from src.security import get_password_hash
 from src.settings import Settings
 from testcontainers.postgres import PostgresContainer
@@ -27,16 +29,15 @@ def client(session):
     app.dependency_overrides.clear()
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def engine():
-    # Caso do windows + Docker no CI
-    import sys  # noqa: PLC0415
+    # Caso do maldito windows
+    import sys
 
-    if sys.platform == 'win32':
+    if sys.platform == "win32":
         yield create_async_engine(Settings().DATABASE_URL)
-
     else:
-        with PostgresContainer('postgres:16', driver='psycopg') as postgres:
+        with PostgresContainer("postgres:16", driver="psycopg") as postgres:
             _engine = create_async_engine(postgres.get_connection_url())
             yield _engine
 
@@ -44,28 +45,28 @@ def engine():
 @pytest_asyncio.fixture
 async def session(engine):
     async with engine.begin() as conn:
-        await conn.run_sync(table_registry.metadata.create_all)
+        await conn.run_sync(SQLModel.metadata.create_all)
 
     async with AsyncSession(engine, expire_on_commit=False) as session:
         yield session
 
     async with engine.begin() as conn:
-        await conn.run_sync(table_registry.metadata.drop_all)
+        await conn.run_sync(SQLModel.metadata.drop_all)
 
 
 @contextmanager
 def _mock_db_time(*, model, time=datetime(2024, 1, 1)):
     def fake_time_handler(mapper, connection, target):
-        if hasattr(target, 'created_at'):
+        if hasattr(target, "created_at"):
             target.created_at = time
-        if hasattr(target, 'updated_at'):
+        if hasattr(target, "updated_at"):
             target.updated_at = time
 
-    event.listen(model, 'before_insert', fake_time_handler)
+    event.listen(model, "before_insert", fake_time_handler)
 
     yield time
 
-    event.remove(model, 'before_insert', fake_time_handler)
+    event.remove(model, "before_insert", fake_time_handler)
 
 
 @pytest.fixture
@@ -75,7 +76,7 @@ def mock_db_time():
 
 @pytest_asyncio.fixture
 async def user(session):
-    password = 'testtest'
+    password = "testtest"
     user = UserFactory(password=get_password_hash(password))
 
     session.add(user)
@@ -83,13 +84,12 @@ async def user(session):
     await session.refresh(user)
 
     user.clean_password = password
-
     return user
 
 
 @pytest_asyncio.fixture
 async def other_user(session):
-    password = 'testtest'
+    password = "testtest"
     user = UserFactory(password=get_password_hash(password))
 
     session.add(user)
@@ -97,23 +97,24 @@ async def other_user(session):
     await session.refresh(user)
 
     user.clean_password = password
-
     return user
 
 
 @pytest.fixture
 def token(client, user):
     response = client.post(
-        '/auth/token',
-        data={'username': user.email, 'password': user.clean_password},
+        "/auth/token",
+        data={"username": user.email, "password": user.clean_password},
     )
-    return response.json()['access_token']
+    return response.json()["access_token"]
 
 
 class UserFactory(factory.Factory):
     class Meta:
         model = User
 
-    username = factory.Sequence(lambda n: f'test{n}')
-    email = factory.LazyAttribute(lambda obj: f'{obj.username}@test.com')
-    password = factory.LazyAttribute(lambda obj: f'{obj.username}@example.com')
+    username = factory.Sequence(lambda n: f"test{n}")
+    email = factory.LazyAttribute(lambda obj: f"{obj.username}@test.com")
+    password = factory.LazyAttribute(
+        lambda obj: f"{obj.username}@example.com"
+    )
