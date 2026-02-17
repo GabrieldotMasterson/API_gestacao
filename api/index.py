@@ -1,1 +1,0 @@
-from gestacao_api.src.app import app
