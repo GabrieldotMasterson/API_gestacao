@@ -26,6 +26,7 @@ async def create_daily_message(
         emoji=dailyMessage.emoji,
         category=dailyMessage.category,
         type=dailyMessage.type,
+        only_premium=dailyMessage.only_premium,
     )
     session.add(db_message)
     await session.commit()

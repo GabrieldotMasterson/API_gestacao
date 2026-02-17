@@ -1,6 +1,6 @@
 from http import HTTPStatus
 
-from src.schemas import UserPublic
+from src.schemas.userSchemas import UserPublic
 
 
 def test_create_user(client):
@@ -27,14 +27,14 @@ def test_read_users(client):
 
 
 def test_read_users_with_users(client, user):
-    user_schema = UserPublic.model_validate(user).model_dump()
+    user_schema = UserPublic.model_validate(user[0]).model_dump()
     response = client.get('/users/')
     assert response.json() == {'users': [user_schema]}
 
 
 def test_update_user(client, user, token):
     response = client.put(
-        f'/users/{user.id}',
+        f'/users/{user[0].id}',
         headers={'Authorization': f'Bearer {token}'},
         json={
             'username': 'bob',
@@ -46,7 +46,7 @@ def test_update_user(client, user, token):
     assert response.json() == {
         'username': 'bob',
         'email': 'bob@example.com',
-        'id': user.id,
+        'id': user[0].id,
     }
 
 
@@ -63,7 +63,7 @@ def test_update_integrity_error(client, user, token):
 
     # Alterando o user das fixture para fausto
     response_update = client.put(
-        f'/users/{user.id}',
+        f'/users/{user[0].id}',
         headers={'Authorization': f'Bearer {token}'},
         json={
             'username': 'fausto',
@@ -80,7 +80,7 @@ def test_update_integrity_error(client, user, token):
 
 def test_delete_user(client, user, token):
     response = client.delete(
-        f'/users/{user.id}',
+        f'/users/{user[0].id}',
         headers={'Authorization': f'Bearer {token}'},
     )
 

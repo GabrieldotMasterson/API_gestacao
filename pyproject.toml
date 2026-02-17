@@ -13,7 +13,8 @@ dependencies = [
     "aiosqlite (>=0.22.1,<0.23.0)",
     "sqlalchemy[asyncio] (>=2.0.46,<3.0.0)",
     "tzdata (>=2025.3,<2026.0)",
-    "sqlmodel (>=0.0.32,<0.0.33)"
+    "sqlmodel (>=0.0.32,<0.0.33)",
+    "psycopg>=3.3.2",
 ]
 
 [dependency-groups]
