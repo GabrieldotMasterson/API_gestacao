@@ -20,6 +20,8 @@ argon2-cffi==25.1.0
     # via pwdlib
 argon2-cffi-bindings==25.1.0
     # via argon2-cffi
+asyncpg==0.31.0
+    # via gestacao-api
 certifi==2026.1.4
     # via
     #   httpcore
@@ -107,6 +109,8 @@ pluggy==1.6.0
     #   pytest-cov
 psutil==6.1.1
     # via taskipy
+psycopg==3.3.2
+    # via gestacao-api
 pwdlib==0.3.0
     # via gestacao-api
 pycparser==3.0 ; implementation_name != 'PyPy'
@@ -194,6 +198,7 @@ typing-extensions==4.15.0
     #   alembic
     #   anyio
     #   fastapi
+    #   psycopg
     #   pydantic
     #   pydantic-core
     #   pydantic-extra-types
@@ -212,6 +217,7 @@ tzdata==2025.3
     # via
     #   faker
     #   gestacao-api
+    #   psycopg
 urllib3==2.6.3
     # via
     #   docker
